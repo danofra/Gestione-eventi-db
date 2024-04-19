@@ -3,14 +3,12 @@ package dano_fra.Gestioneeventidb.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Getter
 @Setter
 @ToString
 @AllArgsConstructor
-
 @NoArgsConstructor
 @Entity
 @Table(name = "evento")
@@ -20,7 +18,7 @@ public class Evento {
     private long id;
     private String nome;
     private String descrizione;
-    private LocalDate data;
+    private String data;
     private String luogo;
     private int max_partecipanti;
     @ManyToMany
