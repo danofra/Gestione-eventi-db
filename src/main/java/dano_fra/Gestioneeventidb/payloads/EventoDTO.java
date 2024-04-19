@@ -16,8 +16,7 @@ public record EventoDTO(
         @NotNull(message = "Luogo non può essere nullo")
         @NotEmpty(message = "Luogo non può essere vuoto")
         String luogo,
-        @NotNull(message = "Max partecipanti non può essere nullo")
-        @NotEmpty(message = "Max partecipanti non può essere vuoto")
+        
         int max_partecipanti
 ) {
 }

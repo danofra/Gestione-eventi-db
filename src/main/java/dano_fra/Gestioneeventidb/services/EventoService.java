@@ -4,6 +4,7 @@ import dano_fra.Gestioneeventidb.entities.Evento;
 import dano_fra.Gestioneeventidb.exceptions.BadRequestException;
 import dano_fra.Gestioneeventidb.payloads.EventoDTO;
 import dano_fra.Gestioneeventidb.repositories.EventoDAO;
+import dano_fra.Gestioneeventidb.repositories.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,6 +16,9 @@ import org.springframework.stereotype.Service;
 public class EventoService {
     @Autowired
     private EventoDAO eventoDAO;
+    @Autowired
+    private UserDAO userDAO;
+ 
 
     public Evento save(EventoDTO newEvento) {
         Evento evento = new Evento();
@@ -41,7 +45,7 @@ public class EventoService {
         this.eventoDAO.delete(evento);
     }
 
-    public Evento findByIdAndUpdate(int eventoId, EventoDTO newEvento) {
+    public Evento findByIdAndUpdate(long eventoId, EventoDTO newEvento) {
         Evento evento = this.findById(eventoId);
         evento.setNome(newEvento.nome());
         evento.setLuogo(newEvento.luogo());
@@ -50,5 +54,5 @@ public class EventoService {
         evento.setMax_partecipanti(newEvento.max_partecipanti());
         return this.eventoDAO.save(evento);
     }
-    
+
 }

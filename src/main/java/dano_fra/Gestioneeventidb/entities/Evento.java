@@ -1,9 +1,10 @@
 package dano_fra.Gestioneeventidb.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -21,13 +22,9 @@ public class Evento {
     private String data;
     private String luogo;
     private int max_partecipanti;
-    @ManyToMany
-    @JoinTable(
-            name = "partecipazione",
-            joinColumns = @JoinColumn(name = "evento_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
-    private List<User> partecipanti;
+    @ManyToMany(mappedBy = "eventi")
+    @JsonIgnore
+    private Set<User> users;
 
 
 }

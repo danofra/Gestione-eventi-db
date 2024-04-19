@@ -14,6 +14,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -23,9 +25,9 @@ public class UserController {
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority('ADMIN')")
-    public UserDTO user(@RequestBody @Validated UserDTO body, BindingResult resul) {
-        if (resul.hasErrors()) {
-            throw new BadRequestException(resul.getAllErrors());
+    public UserDTO user(@RequestBody @Validated UserDTO body, BindingResult result) {
+        if (result.hasErrors()) {
+            throw new BadRequestException(result.getAllErrors());
         }
         User user = new User();
         user.setNome(body.nome());
@@ -53,11 +55,11 @@ public class UserController {
         return this.userService.findById(userId);
     }
 
-    @PutMapping("/{dipendenteId}")
+    @PutMapping("/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAuthority('ADMIN')")
-    public User findAndUpdate(@PathVariable int dipendenteId, @RequestBody UserDTO body) {
-        return userService.findByIdAndUpdate(dipendenteId, body);
+    public User findAndUpdate(@PathVariable long userId, @RequestBody UserDTO body) {
+        return userService.findByIdAndUpdate(userId, body);
     }
 
     @GetMapping("/me")
@@ -74,6 +76,12 @@ public class UserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteProfile(@AuthenticationPrincipal User currentAuthenticatedUser) {
         this.userService.findByIdAndDelete(currentAuthenticatedUser.getId());
+    }
+
+    @PostMapping("/me/{eventoId}")
+    @ResponseStatus(HttpStatus.OK)
+    public User findByIdAndUtente(@PathVariable long eventoId, @AuthenticationPrincipal User user) throws IOException {
+        return userService.findByIdAndAddUtente(eventoId, user.getId());
     }
 
 }
