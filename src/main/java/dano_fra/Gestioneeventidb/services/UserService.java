@@ -1,11 +1,16 @@
 package dano_fra.Gestioneeventidb.services;
 
 import dano_fra.Gestioneeventidb.entities.User;
+import dano_fra.Gestioneeventidb.enums.ruolo;
 import dano_fra.Gestioneeventidb.exceptions.BadRequestException;
 import dano_fra.Gestioneeventidb.payloads.UserDTO;
 import dano_fra.Gestioneeventidb.payloads.UserResponseDTO;
 import dano_fra.Gestioneeventidb.repositories.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -28,8 +33,15 @@ public class UserService {
         user.setCognome(newUser.cognome());
         user.setEmail(newUser.email());
         user.setPassword(bcrypt.encode(newUser.password()));
+        user.setRuoloUtente(ruolo.USER);
         this.userDAO.save(user);
         return new UserResponseDTO(user.getEmail());
+    }
+
+    public Page<User> getUser(int page, int size, String sortBy) {
+        if (size > 100) size = 100;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        return this.userDAO.findAll(pageable);
     }
 
     public User findById(long userId) {

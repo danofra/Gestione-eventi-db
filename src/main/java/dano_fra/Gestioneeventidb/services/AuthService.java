@@ -17,7 +17,7 @@ public class AuthService {
     @Autowired
     private PasswordEncoder bcrypt;
 
-    public String authwnticateDipAndToken(UserLoginDTO payload) {
+    public String authenticationDipAndToken(UserLoginDTO payload) {
         User dipendente = this.userService.findByEmail(payload.email());
         if (bcrypt.matches(payload.password(), dipendente.getPassword())) {
             return jwtTools.createToken(dipendente);
