@@ -3,6 +3,8 @@ package dano_fra.Gestioneeventidb.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Setter
 @Getter
 @ToString
@@ -18,6 +20,7 @@ public class User {
     private String cognome;
     private String email;
     private String password;
-
+    @ManyToMany(mappedBy = "partecipanti")
+    private List<Evento> eventiPartecipati;
 
 }
